@@ -121,19 +121,3 @@ $ export SERVICE_IP=$(kubectl get svc --namespace default rottenpotatoes --templ
 $ echo http://$SERVICE_IP:80
 ```
 ___
-# Results<br />
-In this results example, I used _ecsys.io_ domain. So I ended up with two web links: <br />
-**ecsys.io** (for the main hello-world page) and <br />
-**graf.ecsys.io** (for the grafana web page).
-1. **Hello-world web page:**<br />
-
-![Hostname changes everytime you refresh the page (LoadBalacing).](/results/hello-world.png "hello-world result.")<br />
-
-Hostname changes due to the LoadBalacing everytime you refresh the page.<br /><br /><br />
-2. **Grafana web page:**<br />
-Default login username: __admin__<br />
-Default password: __prom-operator__<br /><br />
-![Grafana login page.](/results/grafana-login.png "Grafana login page.")<br /><br />
-
-![Grafana dashboard example.](/results/grafana-dashboard.png "Grafana dashboard example.")<br />
-Grafana dashboard example<br />
