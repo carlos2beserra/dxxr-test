@@ -4,14 +4,6 @@ terraform {
       source  = "digitalocean/digitalocean"
       version = "~> 2.0"
     }
-    kubernetes = {
-      source  = "hashicorp/kubernetes"
-      version = ">= 2.0.0"
-    }
-    helm = {
-      source  = "hashicorp/helm"
-      version = ">= 2.0.1"
-    }
   }
 }
 
@@ -31,4 +23,15 @@ resource "digitalocean_kubernetes_cluster" "k8scluster" {
     size       = "s-1vcpu-2gb"
     node_count = 3
   }
+}
+
+data "digitalocean_kubernetes_cluster" "k8scluster" {
+  name = "k8sdxxr"
+
+  depends_on = [digitalocean_kubernetes_cluster.k8scluster]
+}
+
+output "kubeconfig" {
+  sensitive = true
+  value = data.digitalocean_kubernetes_cluster.k8scluster.kube_config[0]
 }
