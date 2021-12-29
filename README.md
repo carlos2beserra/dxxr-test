@@ -55,7 +55,7 @@ After completing, Terraform CLI will show _"Apply complete!"_ message and how ma
 
 You can get the created cluster's kubeconfig by using this command.
 ```
-terraform output kubeconfig | awk '/EOT/{found=0} {if(found) print} /-EOT/{found=1}' > ~/.kube/config
+$ terraform output kubeconfig | awk '/EOT/{found=0} {if(found) print} /-EOT/{found=1}' > ~/.kube/config
 ```
 
 ## 3. **Building and pushing the docker image:**
