@@ -2,7 +2,7 @@
 
 This repository is divided in three main parts.
 - `do-k8scluster.tf`: Terraform to create the Kubernetes Cluster on DigitalOcean (Cloud Provider);
-- `src/rottenpotatoes-web`: Web python application used as example to be deployed in the cluster;
+- `src/rottenpotatoes-web`: Web python application used as example to be deployed in the cluster ([source link](https://github.com/KubeDev/rotten-potatoes));
 - `charts/rottenpotatoes`: Application's Helm chart, contains deployment for the web app and its database (mongodb).
 
 All development and tests were done on Ubuntu 20.04
