@@ -10,7 +10,7 @@ All development and tests were done on Ubuntu 20.04
 > If you already have this repository downloaded, a kubernetes cluster configured and the application pushed to a container image registry, just jump to **Step 4** to install the Helm chart.
 
 ## Requeriments
-- [Docker](hhttps://docs.docker.com/get-docker/);
+- [Docker](https://docs.docker.com/get-docker/);
 - [Kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl);
 - [Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli);
 - [Helm](https://helm.sh/docs/intro/install/);
