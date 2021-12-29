@@ -7,6 +7,8 @@ This repository is divided in three main parts.
 
 All development and tests were done on Ubuntu 20.04
 
+> If you already have this repository downloaded, a kubernetes cluster configured and the application pushed to a container image registry, just jump to **Step 4** to install the Helm chart.
+
 ## Requeriments
 - [Docker](hhttps://docs.docker.com/get-docker/);
 - [Kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl);
@@ -26,6 +28,7 @@ $ cd dxxr-test-main/
 
 
 ## 2. **Running Terraform code:**
+The default terraform file from this repository is configured to deploy a kubernetes cluster named **k8sdxxr** on DigitalOcean region **nyc3** using **1.21.5-do.0** kubernetes version and **3 worker nodes** to the cluster.
 First, run the following terrafom commands to download providers and validate and plan the infraestructure provisioning.
 
 ```
@@ -90,28 +93,28 @@ $ helm install rottenpotatoes charts/rottenpotatoes/
 ```
 
 Use this command to keep watching the kubernetes resources until it's all running.
-
+> It may take some minutes to DigitalOcean to provide a External IP to `rottenpotatoes` service.
 ```
 $ watch kubectl get all -n default
 ```
 
 ```
 NAME                                  READY   STATUS    RESTARTS   AGE
-pod/mongodb-89dddc46-r9rwz            1/1     Running   0          48m
-pod/rottenpotatoes-59b9c48897-5fjxd   1/1     Running   0          48m
+pod/mongodb-89dddc46-vcl44            1/1     Running   0          7m28s
+pod/rottenpotatoes-75d595c9f9-bdx6z   1/1     Running   0          7m28s
 
-NAME                     TYPE           CLUSTER-IP      EXTERNAL-IP      PORT(S)        AGE  
-service/kubernetes       ClusterIP      10.245.0.1      <none>           443/TCP        3h58m
-service/mongo-service    ClusterIP      10.245.70.37    <none>           27017/TCP      48m  
-service/rottenpotatoes   LoadBalancer   10.245.46.247   138.197.59.252   80:30735/TCP   48m  
+NAME                     TYPE           CLUSTER-IP      EXTERNAL-IP      PORT(S)        AGE
+service/kubernetes       ClusterIP      10.245.0.1      <none>           443/TCP        16m
+service/mongo-service    ClusterIP      10.245.191.36   <none>           27017/TCP      7m29s
+service/rottenpotatoes   LoadBalancer   10.245.91.124   159.89.247.107   80:31588/TCP   7m29s
 
 NAME                             READY   UP-TO-DATE   AVAILABLE   AGE
-deployment.apps/mongodb          1/1     1            1           48m
-deployment.apps/rottenpotatoes   1/1     1            1           48m
+deployment.apps/mongodb          1/1     1            1           7m29s
+deployment.apps/rottenpotatoes   1/1     1            1           7m29s
 
 NAME                                        DESIRED   CURRENT   READY   AGE
-replicaset.apps/mongodb-89dddc46            1         1         1       48m
-replicaset.apps/rottenpotatoes-59b9c48897   1         1         1       48m
+replicaset.apps/mongodb-89dddc46            1         1         1       7m29s
+replicaset.apps/rottenpotatoes-75d595c9f9   1         1         1       7m29s
 ```
 
 To test the deployed application, run these commands and access the gotten address through the browser.
@@ -121,3 +124,37 @@ $ export SERVICE_IP=$(kubectl get svc --namespace default rottenpotatoes --templ
 $ echo http://$SERVICE_IP:80
 ```
 ___
+
+# Results
+The deployed application should look like this:
+![](results/main-screen.jpg)
+
+It's possible to select movies from the catalog and write reviews on it. It will be saved in the database. 
+![](results/comment1.jpg)
+
+So when deleting the application pod and creating another one, the data stays with the database, and it's possible to read the same comments again and add more.
+
+```
+$ kubectl delete pod rottenpotatoes-75d595c9f9-bdx6z
+```
+
+```
+NAME                                  READY   STATUS    RESTARTS   AGE
+pod/mongodb-89dddc46-vcl44            1/1     Running   0          11m
+pod/rottenpotatoes-75d595c9f9-g2qpb   1/1     Running   0          18s
+
+NAME                     TYPE           CLUSTER-IP      EXTERNAL-IP      PORT(S)        AGE
+service/kubernetes       ClusterIP      10.245.0.1      <none>           443/TCP        20m
+service/mongo-service    ClusterIP      10.245.191.36   <none>           27017/TCP      11m
+service/rottenpotatoes   LoadBalancer   10.245.91.124   159.89.247.107   80:31588/TCP   11m
+
+NAME                             READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/mongodb          1/1     1            1           11m
+deployment.apps/rottenpotatoes   1/1     1            1           11m
+
+NAME                                        DESIRED   CURRENT   READY   AGE
+replicaset.apps/mongodb-89dddc46            1         1         1       11m
+replicaset.apps/rottenpotatoes-75d595c9f9   1         1         1       11m
+```
+
+![](results/comment2.jpg)
